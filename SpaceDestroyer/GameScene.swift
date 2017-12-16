@@ -18,7 +18,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //setting up a score label
     let scoreLbl = SKLabelNode(fontNamed: "theboldfont")//SpriteKit label object
     
-    let goLbl = SKLabelNode(fontNamed: "theboldfont")
+    let goLbl = SKLabelNode(fontNamed: "Abraham")
     
     //setting up our lvl system
     var lvlNum = 1
@@ -127,8 +127,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLbl.zPosition = 100
         self.addChild(scoreLbl)
         
-        
-        goLbl.text = "Level \(lvlNum)"
+        goLbl.text = "שלב \(lvlNum)"
         goLbl.fontSize = 200
         goLbl.fontColor = SKColor.white
         goLbl.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
@@ -138,7 +137,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let fadeIn = SKAction.fadeIn(withDuration: 0.3)
         goLbl.run(fadeIn)
         
-        livesLbl.text = "Lives: 3"
+        livesLbl.text = "❤️❤️❤️"
         livesLbl.fontSize = 70
         livesLbl.fontColor = SKColor.white
         livesLbl.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
@@ -166,13 +165,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func losingLives() {
         lives -= 1
-        livesLbl.text = "Lives: \(lives)"
+        livesLbl.text = String(repeating: "❤️", count: lives)
         
         let scaleUp = SKAction.scale(to: 1.5, duration: 0.2)
-        let changeToRed = SKAction.colorize(with: .red, colorBlendFactor: 1, duration: 0.2)
-        let backToWhite = SKAction.colorize(with: .white, colorBlendFactor: 1, duration: 0.2)
         let scaleDown = SKAction.scale(to: 1, duration: 0.2)
-        let livesSequence = SKAction.sequence([changeToRed, scaleUp, scaleDown, backToWhite])
+        let livesSequence = SKAction.sequence([scaleUp, scaleDown])
         livesLbl.run(livesSequence)
         
         // If player ran out of life - run game over
@@ -217,7 +214,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func scoreActive() {
         score += 1
-        scoreLbl.text = "Score: \(score)"
+        scoreLbl.text = "ניקוד: \(score)"
         
         if score == 2 || score == 4 || score == 6 {
             startGame()

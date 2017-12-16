@@ -10,10 +10,9 @@ import Foundation
 import SpriteKit
 
 class MainMenuScene: SKScene {
-    let startBtn = SKLabelNode(fontNamed: "theboldfont")
+    let startBtn = SKLabelNode(fontNamed: "Abraham")
+
     override func didMove(to view: SKView) {
-    
-        
         let background = SKSpriteNode(imageNamed: "background")
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         background.zPosition = 0
@@ -35,16 +34,15 @@ class MainMenuScene: SKScene {
         gameTtl2.zPosition = 1
         self.addChild(gameTtl2)
         
-        let credTtl = SKLabelNode(fontNamed: "theboldfont")
-        credTtl.text = "Ohad Stavi, Alfi Naim, Daniel Kaplan"
+        let credTtl = SKLabelNode(fontNamed: "Abraham")
+        credTtl.text = "אוהד סתוי, אלפי נעים ודניאל קפלן"
         credTtl.fontSize = 60
         credTtl.fontColor = SKColor.white
         credTtl.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.75)
         credTtl.zPosition = 1
         self.addChild(credTtl)
         
-        
-        startBtn.text = "Start Game"
+        startBtn.text = "התחל משחק"
         startBtn.fontSize = 150
         startBtn.fontColor = SKColor.white
         startBtn.position = CGPoint(x: self.size.width/2, y: self.size.height*0.5)
