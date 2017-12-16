@@ -18,9 +18,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let goLbl = Font.hebrew.labelNode
     
     // Setting up our Level system
-    var lvlNum = 1
+    var lvlNum = 0 {
+        didSet { print("set level to \(lvlNum)") }
+    }
     
     // Setting up our Lives system
+    var didPlayerEnter = false
     var lives = 3
     var livesLbl = Font.hebrew.labelNode
     
@@ -34,9 +37,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Creating an enum to present our game states
     enum GameStates {
-        case startScreen //before the game
-        case gameOn //when game occurs
-        case gameOver //when game is over
+        case startScreen // before the game
+        case gameOn // when game occurs
+        case gameOver // when game is over
+        case levelUp // when user levels up
     }
     
     var currentGameState = GameStates.startScreen
@@ -88,7 +92,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //initiating SKPhysicsContactDelegate in our GameScene
         self.physicsWorld.contactDelegate = self
         
-        //connecting b.g img from assets
+        // Connecting b.g img from assets
         let background = SKSpriteNode(imageNamed: "background")
         background.size = self.size //setting the b.g's size to match sence
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2) //b.g position in scene
@@ -112,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         player.physicsBody!.contactTestBitMask = PhysicsCatgories.Enemies
         self.addChild(player) // execute
         
-        //setting up our score label
+        // Setting up our score label
         scoreLbl.text = "ניקוד: 0"
         scoreLbl.fontSize = 70
         scoreLbl.fontColor = SKColor.white
@@ -122,15 +126,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLbl.zPosition = 100
         self.addChild(scoreLbl)
         
-        goLbl.text = "שלב \(lvlNum)"
         goLbl.fontSize = 200
         goLbl.fontColor = SKColor.white
         goLbl.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
-        goLbl.zPosition = 1
         goLbl.alpha = 0
+        goLbl.zPosition = 1
         self.addChild(goLbl)
-        let fadeIn = SKAction.fadeIn(withDuration: 0.3)
-        goLbl.run(fadeIn)
         
         livesLbl.text = "❤️❤️❤️"
         livesLbl.fontSize = 70
@@ -140,24 +141,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         livesLbl.zPosition = 100
         self.addChild(livesLbl)
         
+        startGame()
     }
     
     private func startGame() {
-        currentGameState = GameStates.gameOn
+        currentGameState = .gameOn
+        didPlayerEnter = false
 
-        let fadeOut = SKAction.fadeOut(withDuration: 0.5)
-        let delete = SKAction.removeFromParent()
-        let deletionSeq = SKAction.sequence([fadeOut, delete])
-        goLbl.run(deletionSeq)
-
-        let moveToScreen = SKAction.moveTo(y: self.size.height*0.9, duration: 0.3)
-        livesLbl.run(moveToScreen)
-        scoreLbl.run(moveToScreen)
-        
-        let shipGetsIn = SKAction.moveTo(y: self.size.height*0.2, duration: 0.5)
-        let startLvl = SKAction.run(aNewLevel)
-        let startGameSeq = SKAction.sequence([shipGetsIn, startLvl])
-        player.run(startGameSeq)
+        levelUp()
     }
     
     private func losingLives() {
@@ -178,22 +169,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //setting up game over system
     private func gameOver() {
         //declaring that our game is over
-        currentGameState = GameStates.gameOver
-        self.removeAllActions()//stop enemies from spawning
-        //stop all actions related to bullet - from all over the scene
-        self.enumerateChildNodes(withName: "Bullet") { bullet, _ in
-            bullet.removeAllActions()
-        }
-
-        self.enumerateChildNodes(withName: "Enemy") { enemies, _ in
-            enemies.removeAllActions()
-        }
+        currentGameState = .gameOver
+        clearGame()
         
-        //change scene when game is over
+        // change scene when game is over
         let changeSceneAction = SKAction.run(moveScene)
         let waitBeforeChange = SKAction.wait(forDuration: 1)
         let changeSeq = SKAction.sequence([waitBeforeChange, changeSceneAction])
         self.run(changeSeq)
+    }
+    
+    private func clearGame() {
+        self.removeAllActions() // stop enemies from spawning
+        
+        // Stop all actions related to bullet - from all over the scene
+        self.enumerateChildNodes(withName: "Bullet") { bullet, _ in
+            bullet.removeAllActions()
+        }
+        
+        self.enumerateChildNodes(withName: "Enemy") { enemies, _ in
+            enemies.removeAllActions()
+        }
     }
     
     private func moveScene() {
@@ -209,10 +205,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func scoreUp() {
         score += 1
         scoreLbl.text = "ניקוד: \(score)"
-        
-        if [2, 4, 6].contains(score) {
-            startGame()
-            aNewLevel()
+
+        // Level up when score is even
+        if score % 2 == 0 {
+            levelUp()
         }
     }
     
@@ -280,10 +276,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     func bulletsFired() {
         let bullet = SKSpriteNode(imageNamed: "bullet")
-        bullet.name = "Bullet" //give a reference name to object - will be used in gameOver func
+        bullet.name = "Bullet"
         bullet.setScale(1)
         bullet.position = player.position
         bullet.zPosition = 1
+        self.addChild(bullet)
         
         let physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
         physicsBody.affectedByGravity = false
@@ -291,7 +288,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         physicsBody.collisionBitMask = PhysicsCatgories.None
         physicsBody.contactTestBitMask = PhysicsCatgories.Enemies
         bullet.physicsBody = physicsBody
-        self.addChild(bullet)
         
         //defining the bullet's actions
         let bulletMovement = SKAction.moveTo(y: self.size.height + bullet.size.height, duration: 1)
@@ -361,10 +357,84 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         enemies.zRotation = amountToRotate
     }
     
-    //making enemies spawn by themselves
-    func aNewLevel() {
+    func levelUp() {
         lvlNum += 1
+        currentGameState = .levelUp
+        clearGame()
         
+        // Fade out all game elements
+        self.enumerateChildNodes(withName: "Enemy") { enemy, _ in
+            enemy.run(.fadeOut(withDuration: 0.2))
+            enemy.removeFromParent()
+        }
+        
+        self.enumerateChildNodes(withName: "Bullet") { bullet, _ in
+            bullet.run(.fadeOut(withDuration: 0.2))
+            bullet.removeFromParent()
+        }
+        
+        let elements: [SKNode] = [scoreLbl, livesLbl]
+        for element in elements {
+            element.run(.fadeOut(withDuration: 0.2))
+        }
+        
+        if didPlayerEnter {
+            player.run(.fadeOut(withDuration: 0.2))
+        }
+
+        // Fade in level label
+        goLbl.text = "שלב \(lvlNum)"
+        goLbl.run(.fadeIn(withDuration: 0.3))
+        
+        DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.5) {
+            if self.didPlayerEnter {
+                self.startSpwaning()
+            } else {
+                self.goLbl.run(.fadeOut(withDuration: 0.3))
+
+                let startGameSeq = SKAction.sequence([
+                    .move(to: CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.1), duration: 0.5),
+                    .wait(forDuration: 1.0),
+                    .run(self.startSpwaning)
+                    ])
+
+                self.player.run(startGameSeq)
+            }
+        }
+    }
+    
+    // Making enemies spawn by themselves
+    func startSpwaning() {
+        didPlayerEnter = true
+        currentGameState = .gameOn
+        
+        // Move lives and score into screen
+        let moveToScreen = SKAction.moveTo(y: self.size.height * 0.9, duration: 0.3)
+        livesLbl.run(moveToScreen)
+        scoreLbl.run(moveToScreen)
+        
+        // Fade in all game elements
+        self.enumerateChildNodes(withName: "Enemy") { enemy, _ in
+            enemy.run(.fadeIn(withDuration: 0.2))
+        }
+        
+        self.enumerateChildNodes(withName: "Bullet") { bullet, _ in
+            bullet.run(.fadeIn(withDuration: 0.2))
+        }
+        
+        let elements: [SKNode] = [scoreLbl, livesLbl, player]
+        for element in elements {
+            element.run(.fadeIn(withDuration: 0.2))
+        }
+        
+        // Fade out level label
+        goLbl.text = "שלב \(lvlNum)"
+        goLbl.fontSize = 200
+        goLbl.fontColor = SKColor.white
+        goLbl.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
+        goLbl.zPosition = 1
+        goLbl.run(.fadeOut(withDuration: 0.3))
+
         // If scene has action - remove it (nececarry for leveling up)
         if self.action(forKey: "spawnYourFoe") != nil {
             self.removeAction(forKey: "spawnYourFoe")
