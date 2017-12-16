@@ -19,9 +19,9 @@ class GameOverScene: SKScene {
         run(sound)
     }
     
-    let backToMainLbl = SKLabelNode(fontNamed: "theboldfont")
-    let restartLbl = SKLabelNode(fontNamed: "theboldfont")
-    let shareLbl = SKLabelNode(fontNamed: "theboldfont")
+    let backToMainLbl = Font.hebrew.labelNode
+    let restartLbl = Font.hebrew.labelNode
+    let shareLbl = Font.hebrew.labelNode
     
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "background")
@@ -31,16 +31,16 @@ class GameOverScene: SKScene {
         
         playSound(sound: gameOverSound)
     
-        let headerLbl = SKLabelNode(fontNamed: "theboldfont")
-        headerLbl.text = "Game Over!"
+        let headerLbl = Font.hebrew.labelNode
+        headerLbl.text = "המשחק נגמר!"
         headerLbl.fontSize = 180
         headerLbl.fontColor = SKColor.white
         headerLbl.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.7)
         headerLbl.zPosition = 1
         self.addChild(headerLbl)
         
-        let scoreLbl = SKLabelNode(fontNamed: "theboldfont")
-        scoreLbl.text = "Score: \(score)"
+        let scoreLbl = Font.hebrew.labelNode
+        scoreLbl.text = "ניקוד: \(score)"
         scoreLbl.fontSize = 110
         scoreLbl.fontColor = SKColor.white
         scoreLbl.position = CGPoint(x: self.size.width/2, y: self.size.height*0.55)
@@ -57,29 +57,29 @@ class GameOverScene: SKScene {
             defaults.set(highScore, forKey: "highScoreSaved") //store
         }
         
-        let highScoreLbl = SKLabelNode(fontNamed: "theboldfont")
-        highScoreLbl.text = "High Score: \(highScore)"
+        let highScoreLbl = Font.hebrew.labelNode
+        highScoreLbl.text = "שיא: \(highScore)"
         highScoreLbl.fontSize = 110
         highScoreLbl.fontColor = SKColor.white
         highScoreLbl.position = CGPoint(x: self.size.width/2, y: self.size.height*0.45)
         highScoreLbl.zPosition = 1
         self.addChild(highScoreLbl)
         
-        restartLbl.text = "Restart Level"
+        restartLbl.text = "נסה שנית"
         restartLbl.fontSize = 60
         restartLbl.fontColor = SKColor.white
         restartLbl.position = CGPoint(x: self.size.width/2, y: self.size.height*0.35)
         restartLbl.zPosition = 1
         self.addChild(restartLbl)
         
-        backToMainLbl.text = "Back To Main Menu"
+        backToMainLbl.text = "חזרה לתפריט הראשי"
         backToMainLbl.fontSize = 60
         backToMainLbl.fontColor = SKColor.white
         backToMainLbl.position = CGPoint(x: self.size.width/2, y: self.size.height*0.25)
         backToMainLbl.zPosition = 1
         self.addChild(backToMainLbl)
         
-        shareLbl.text = "Share Score"
+        shareLbl.text = "שתף ניקוד"
         shareLbl.fontSize = 60
         shareLbl.fontColor = SKColor.white
         shareLbl.position = CGPoint(x: self.size.width/2, y: self.size.height*0.15)

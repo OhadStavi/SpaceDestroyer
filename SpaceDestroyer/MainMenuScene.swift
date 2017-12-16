@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 class MainMenuScene: SKScene {
-    let startBtn = SKLabelNode(fontNamed: "Abraham")
+    let startBtn = Font.hebrew.labelNode
 
     override func didMove(to view: SKView) {
         let background = SKSpriteNode(imageNamed: "background")
@@ -18,7 +18,7 @@ class MainMenuScene: SKScene {
         background.zPosition = 0
         self.addChild(background)
         
-        let gameTtl = SKLabelNode(fontNamed: "theboldfont")
+        let gameTtl = Font.english.labelNode
         gameTtl.text = "Space"
         gameTtl.fontSize = 200
         gameTtl.fontColor = SKColor.white
@@ -26,7 +26,7 @@ class MainMenuScene: SKScene {
         gameTtl.zPosition = 1
         self.addChild(gameTtl)
         
-        let gameTtl2 = SKLabelNode(fontNamed: "theboldfont")
+        let gameTtl2 = Font.english.labelNode
         gameTtl2.text = "Destroyer"
         gameTtl2.fontSize = 200
         gameTtl2.fontColor = SKColor.white
@@ -34,7 +34,7 @@ class MainMenuScene: SKScene {
         gameTtl2.zPosition = 1
         self.addChild(gameTtl2)
         
-        let credTtl = SKLabelNode(fontNamed: "Abraham")
+        let credTtl = Font.hebrew.labelNode
         credTtl.text = "אוהד סתוי, אלפי נעים ודניאל קפלן"
         credTtl.fontSize = 60
         credTtl.fontColor = SKColor.white

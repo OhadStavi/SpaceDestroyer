@@ -9,23 +9,21 @@
 import SpriteKit
 import GameplayKit
 
-//SKPhysicsContactDelegate - what will happen when 2 objects comes in touch with each other
-
-var score = 0//score variable declared public to all scenes
+var score = 0 //score variable declared public to all scenes
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
     //setting up a score label
-    let scoreLbl = SKLabelNode(fontNamed: "theboldfont")//SpriteKit label object
+    let scoreLbl = Font.hebrew.labelNode //SpriteKit label object
     
-    let goLbl = SKLabelNode(fontNamed: "Abraham")
+    let goLbl = Font.hebrew.labelNode
     
     //setting up our lvl system
     var lvlNum = 1
     
     //setting up our lives system
     var lives = 3
-    var livesLbl = SKLabelNode(fontNamed: "theboldfont")
+    var livesLbl = Font.hebrew.labelNode
     
     //connecting player image and defining it - declared globally
     //so we can work with our player in multiple methods
@@ -36,13 +34,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
     
     //creating an enum to present our game states
-    enum gameStates {
-        case startScreen//before the game
-        case gameOn//when game occurs
-        case gameOver//when game is over
+    enum GameStates {
+        case startScreen //before the game
+        case gameOn //when game occurs
+        case gameOver //when game is over
     }
     
-    var currentGameState = gameStates.startScreen
+    var currentGameState = GameStates.startScreen
     
     
     //defining physics categories - which physics bodies will interact with which
@@ -118,7 +116,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(player) // execute
         
         //setting up our score label
-        scoreLbl.text = "Score: 0"
+        scoreLbl.text = "ניקוד: 0"
         scoreLbl.fontSize = 70
         scoreLbl.fontColor = SKColor.white
         //score label's position
@@ -148,7 +146,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func startGame() {
-        currentGameState = gameStates.gameOn
+        currentGameState = GameStates.gameOn
         let fadeOut = SKAction.fadeOut(withDuration: 0.5)
         let delete = SKAction.removeFromParent()
         let deletionSeq = SKAction.sequence([fadeOut, delete])
@@ -181,7 +179,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     //setting up game over system
     private func gameOver() {
         //declaring that our game is over
-        currentGameState = gameStates.gameOver
+        currentGameState = GameStates.gameOver
         self.removeAllActions()//stop enemies from spawning
         //stop all actions related to bullet - from all over the scene
         self.enumerateChildNodes(withName: "Bullet") { bullet, _ in
@@ -221,7 +219,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             aNewLevel()
         }
     }
-    //what happened when our contact between objects was made
+    
+    // Handle what happens when 2 objects comes collide with each other
     func didBegin(_ contact: SKPhysicsContact) {
         //instead of defining our objects as bodyA and bodyB every time,
         //we organize them with an if statement which automatically does the
@@ -262,7 +261,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             }
             physBody1.node?.removeFromParent()//delete the bullet
             physBody2.node?.removeFromParent()//delete the enemy
-        
         }
     }
     
@@ -306,7 +304,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // spawning our enemies randomly on the screen
     func enemiesSpawnedAtRandom() {
         //setting up random starting and ending point for our enemies to spawn from
-        let randomXStartPoint = random(min:gameArea.minX, max:gameArea.maxX)
+        let randomXStartPoint = random(min: gameArea.minX, max: gameArea.maxX)
         let randomXEndingPoint = random(min: gameArea.minX, max: gameArea.maxX)
         //setting up our enemies course on the screen after spawning
         let startPoint = CGPoint(x: randomXStartPoint, y: self.size.height * 1.2)

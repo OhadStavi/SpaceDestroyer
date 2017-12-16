@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		9F0D2DF01FE5B0150073CC10 /* Abraham.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F0D2DEF1FE5B0150073CC10 /* Abraham.ttf */; };
 		9F0D2DF21FE5B0970073CC10 /* theboldfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F0D2DF11FE5B0970073CC10 /* theboldfont.ttf */; };
+		9F0D2DF41FE5B3DF0073CC10 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0D2DF31FE5B3DF0073CC10 /* Font.swift */; };
 		9F345DEA1FE3BE3400523419 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F345DE91FE3BE3400523419 /* GameOverScene.swift */; };
 		9F8655C01FE2E3A000C4894E /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F8655BF1FE2E3A000C4894E /* explosion.wav */; };
 		9F929E2B1FE3CD86004BEA74 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */; };
@@ -47,6 +48,7 @@
 /* Begin PBXFileReference section */
 		9F0D2DEF1FE5B0150073CC10 /* Abraham.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Abraham.ttf; sourceTree = "<group>"; };
 		9F0D2DF11FE5B0970073CC10 /* theboldfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = theboldfont.ttf; path = ../../../../../Downloads/theboldfont.ttf; sourceTree = "<group>"; };
+		9F0D2DF31FE5B3DF0073CC10 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		9F345DE91FE3BE3400523419 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
 		9F8655BF1FE2E3A000C4894E /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
 		9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
@@ -156,6 +158,7 @@
 				9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */,
 				9F345DE91FE3BE3400523419 /* GameOverScene.swift */,
 				9FD7A9B61FE034AB00FA8227 /* GameViewController.swift */,
+				9F0D2DF31FE5B3DF0073CC10 /* Font.swift */,
 				9FD7A9B81FE034AB00FA8227 /* Main.storyboard */,
 				9FD7A9BB1FE034AB00FA8227 /* Assets.xcassets */,
 				9FD7A9BD1FE034AB00FA8227 /* LaunchScreen.storyboard */,
@@ -326,6 +329,7 @@
 			files = (
 				9F929E2D1FE3E412004BEA74 /* MainMenuScene.swift in Sources */,
 				9FD7A9B51FE034AB00FA8227 /* GameScene.swift in Sources */,
+				9F0D2DF41FE5B3DF0073CC10 /* Font.swift in Sources */,
 				9FD7A9B71FE034AB00FA8227 /* GameViewController.swift in Sources */,
 				9F345DEA1FE3BE3400523419 /* GameOverScene.swift in Sources */,
 				9FD7A9AF1FE034AB00FA8227 /* AppDelegate.swift in Sources */,
