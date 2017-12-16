@@ -9,11 +9,9 @@
 import Foundation
 import SpriteKit
 
-
-
 class GameOverScene: SKScene {
     let gameOverSound = SKAction.playSoundFileNamed("gameover.mp3", waitForCompletion: false)
-    
+
     //playing game over sound
     func playSound(sound: SKAction) {
         run(sound)
@@ -109,7 +107,9 @@ class GameOverScene: SKScene {
             }
           
             if shareLbl.contains(touchPoints) {
-                let alert = UIAlertController(title: "Don't Keep It To Yourself,", message: "Share Your Score Online!", preferredStyle: UIAlertControllerStyle.alert)
+                let alert = UIAlertController(title: "Don't Keep It To Yourself,",
+                                              message: "Share Your Score Online!",
+                                              preferredStyle: UIAlertControllerStyle.alert)
                 let fbAction = UIAlertAction(title: "Facebook", style: .default, handler: nil)
                 let twAction = UIAlertAction(title: "Twitter", style: .default, handler: nil)
                 let gpAction = UIAlertAction(title: "Google+", style: .default, handler: nil)

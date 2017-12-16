@@ -17,7 +17,7 @@ class MainMenuScene: SKScene {
         background.position = CGPoint(x: self.size.width/2, y: self.size.height/2)
         background.zPosition = 0
         self.addChild(background)
-        
+
         let gameTtl = Font.english.labelNode
         gameTtl.text = "Space"
         gameTtl.fontSize = 200
@@ -25,7 +25,7 @@ class MainMenuScene: SKScene {
         gameTtl.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.9)
         gameTtl.zPosition = 1
         self.addChild(gameTtl)
-        
+
         let gameTtl2 = Font.english.labelNode
         gameTtl2.text = "Destroyer"
         gameTtl2.fontSize = 200
@@ -33,7 +33,7 @@ class MainMenuScene: SKScene {
         gameTtl2.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.8)
         gameTtl2.zPosition = 1
         self.addChild(gameTtl2)
-        
+
         let credTtl = Font.hebrew.labelNode
         credTtl.text = "אוהד סתוי, אלפי נעים ודניאל קפלן"
         credTtl.fontSize = 60
@@ -41,7 +41,7 @@ class MainMenuScene: SKScene {
         credTtl.position = CGPoint(x: self.size.width*0.5, y: self.size.height*0.75)
         credTtl.zPosition = 1
         self.addChild(credTtl)
-        
+
         startBtn.text = "התחל משחק"
         startBtn.fontSize = 150
         startBtn.fontColor = SKColor.white
@@ -49,16 +49,16 @@ class MainMenuScene: SKScene {
         startBtn.zPosition = 1
         self.addChild(startBtn)
     }
-    
+
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch: AnyObject in touches {
             let touchPoints = touch.location(in: self)
-            
+
             if startBtn.contains(touchPoints) {
                 let sceneDestination = GameScene(size: self.size)
                 sceneDestination.scaleMode = self.scaleMode
                 let sceneTransition = SKTransition.fade(withDuration: 0.5)
-                self.view!.presentScene(sceneDestination,transition: sceneTransition)
+                self.view!.presentScene(sceneDestination, transition: sceneTransition)
             }
         }
     }

@@ -45,12 +45,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     // categories are ordered in numbers presented in binary (b)
     struct PhysicsCatgories {
         static let None: UInt32 = 0
-        static let Player: UInt32 = 0b1//1
-        static let Bullet: UInt32 = 0b10//2
-        static let Enemies: UInt32 = 0b100//4
+        static let Player: UInt32 = 0b1 //1
+        static let Bullet: UInt32 = 0b10 //2
+        static let Enemies: UInt32 = 0b100 //4
     }
     
-   // next two funcs generating a random number that our enemies will spawn from
+    // next two funcs generating a random number that our enemies will spawn from
     func random() -> CGFloat {
         return CGFloat(Float(arc4random()) / 0xFFFFFFFF)
     }
@@ -79,7 +79,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     //runs as soon as scene loads
     override func didMove(to view: SKView) {
@@ -145,10 +144,12 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     private func startGame() {
         currentGameState = GameStates.gameOn
+
         let fadeOut = SKAction.fadeOut(withDuration: 0.5)
         let delete = SKAction.removeFromParent()
         let deletionSeq = SKAction.sequence([fadeOut, delete])
         goLbl.run(deletionSeq)
+
         let moveToScreen = SKAction.moveTo(y: self.size.height*0.9, duration: 0.3)
         livesLbl.run(moveToScreen)
         scoreLbl.run(moveToScreen)
@@ -202,17 +203,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //a bit of fade out between scenes
         let sceneTransition = SKTransition.fade(withDuration: 0.5)
         //present new scene with defined transition
-        self.view!.presentScene(sceneDestination,transition: sceneTransition)
+        self.view!.presentScene(sceneDestination, transition: sceneTransition)
     }
-    
-    
-    
-    
-    private func scoreActive() {
+
+    private func scoreUp() {
         score += 1
         scoreLbl.text = "ניקוד: \(score)"
         
-        if score == 2 || score == 4 || score == 6 {
+        if [2, 4, 6].contains(score) {
             startGame()
             aNewLevel()
         }
@@ -230,14 +228,15 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if contact.bodyA.categoryBitMask < contact.bodyB.categoryBitMask {
             physBody1 = contact.bodyA
             physBody2 = contact.bodyB
-        }else{
+        } else {
             physBody1 = contact.bodyB
             physBody2 = contact.bodyA
         }
+
         //if the player has hit the enemy
-        if physBody1.categoryBitMask == PhysicsCatgories.Player && physBody2.categoryBitMask == PhysicsCatgories.Enemies {
-            
-            //if there is a node (object)
+        if physBody1.categoryBitMask == PhysicsCatgories.Player &&
+           physBody2.categoryBitMask == PhysicsCatgories.Enemies {
+            // if there is a node (object)
             if physBody1.node != nil {
             explosionIsSpawned(spawnPosition: physBody1.node!.position)//calling the function in the player's position
             }
@@ -251,11 +250,13 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
         
         //if the bullet hits the enemy and enemy IS on the screen
-        if physBody1.categoryBitMask == PhysicsCatgories.Bullet && physBody2.categoryBitMask == PhysicsCatgories.Enemies && (physBody2.node?.position.y)! < self.size.height {
-            scoreActive()
+        if physBody1.categoryBitMask == PhysicsCatgories.Bullet &&
+           physBody2.categoryBitMask == PhysicsCatgories.Enemies &&
+           (physBody2.node?.position.y)! < self.size.height {
+            scoreUp()
             if physBody2.node != nil {
                 //explosion is spawned right at enemy's position
-            explosionIsSpawned(spawnPosition: physBody2.node!.position)
+                explosionIsSpawned(spawnPosition: physBody2.node!.position)
             }
             physBody1.node?.removeFromParent()//delete the bullet
             physBody2.node?.removeFromParent()//delete the enemy
@@ -267,7 +268,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         explosion.position = spawnPosition
         explosion.zPosition = 3
         explosion.setScale(0)
-        //giving our explosion animative behaviour by using SKActions
+ 
+        // Give our explosion animative behaviour by using SKActions
         let scaleIn = SKAction.scale(to: 1, duration: 0.1)
         let fadeOut = SKAction.scale(to: 0, duration: 0.1)
         let delete = SKAction.removeFromParent()
@@ -276,18 +278,19 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(explosion)
     }
     
-    
     func bulletsFired() {
         let bullet = SKSpriteNode(imageNamed: "bullet")
-        bullet.name = "Bullet"//giving a reference name to object - will be used in gameOver func
+        bullet.name = "Bullet" //give a reference name to object - will be used in gameOver func
         bullet.setScale(1)
         bullet.position = player.position
         bullet.zPosition = 1
-        bullet.physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
-        bullet.physicsBody!.affectedByGravity = false
-        bullet.physicsBody!.categoryBitMask = PhysicsCatgories.Bullet
-        bullet.physicsBody!.collisionBitMask = PhysicsCatgories.None
-        bullet.physicsBody!.contactTestBitMask = PhysicsCatgories.Enemies
+        
+        let physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
+        physicsBody.affectedByGravity = false
+        physicsBody.categoryBitMask = PhysicsCatgories.Bullet
+        physicsBody.collisionBitMask = PhysicsCatgories.None
+        physicsBody.contactTestBitMask = PhysicsCatgories.Enemies
+        bullet.physicsBody = physicsBody
         self.addChild(bullet)
         
         //defining the bullet's actions
@@ -301,56 +304,68 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
 
     // spawning our enemies randomly on the screen
     func enemiesSpawnedAtRandom() {
-        //setting up random starting and ending point for our enemies to spawn from
+        // Make sure game state is on
+        guard currentGameState == .gameOn else {
+            print("Game is not running, not spawning...")
+            return
+        }
+
+        // Setting up random starting and ending point for our enemies to spawn from
         let randomXStartPoint = random(min: gameArea.minX, max: gameArea.maxX)
         let randomXEndingPoint = random(min: gameArea.minX, max: gameArea.maxX)
-        //setting up our enemies course on the screen after spawning
+        
+        // Setting up our enemies course on the screen after spawning
         let startPoint = CGPoint(x: randomXStartPoint, y: self.size.height * 1.2)
         let endingPoint = CGPoint(x: randomXEndingPoint, y: -self.size.height)
         
-        //setting up our enemies
+        // Setting up our enemies
         let enemies = SKSpriteNode(imageNamed: "enemyShip")
         enemies.name = "Enemy"
         enemies.setScale(1)
         enemies.position = startPoint
         enemies.zPosition = 2
-        enemies.physicsBody = SKPhysicsBody(rectangleOf: enemies.size)
-        enemies.physicsBody!.affectedByGravity = false
-        enemies.physicsBody!.categoryBitMask = PhysicsCatgories.Enemies
-        enemies.physicsBody!.collisionBitMask = PhysicsCatgories.None
-        enemies.physicsBody!.contactTestBitMask = PhysicsCatgories.Player | PhysicsCatgories.Bullet
+        
+        // Setting up enemies physics
+        let physicsBody = SKPhysicsBody(rectangleOf: enemies.size)
+        physicsBody.affectedByGravity = false
+        physicsBody.categoryBitMask = PhysicsCatgories.Enemies
+        physicsBody.collisionBitMask = PhysicsCatgories.None
+        physicsBody.contactTestBitMask = PhysicsCatgories.Player | PhysicsCatgories.Bullet
+        enemies.physicsBody = physicsBody
         self.addChild(enemies)
         
-        //straight order to our enemy to move to it's end point + time to get to ending point
+        // Move enemy to its end point
         let enemyEndPoint = SKAction.move(to: endingPoint, duration: 3)
-        //once enemy got to ending point - remove from screen
+
+        // once enemy gets to ending point - remove from screen
         let enemyDeleted = SKAction.removeFromParent()
-        //if enemy passed the screen without getting shot, lose 1 life
+
+        // If enemy passed the screen without getting shot, lose 1 life
         let missedEnemy = SKAction.run(losingLives)
-        //defining enemy sequence of actions
-        let enemyActionSequence = SKAction.sequence([enemyEndPoint,enemyDeleted,missedEnemy])
-        //if game is on - spawn enemy(made for safety that no enemy will spawn when game is over)
-        if currentGameState == .gameOn {
+
+        // Define enemy sequence of actions
+        let enemyActionSequence = SKAction.sequence([enemyEndPoint, enemyDeleted, missedEnemy])
+
+        // Spawn enemy
         enemies.run(enemyActionSequence)
-        }
-        //rotate our enemy to face it's current course
-        //figure out the diffrence between startPoint.x/y to endingPoint.x/y
+
+        // Rotate our enemy to face it's current course,
+        // and figure out the diffrence between startPoint.x/y to endingPoint.x/y
         let deltaX = endingPoint.x - startPoint.x
         let deltaY = endingPoint.y - startPoint.y
         
-        //defining amount of rotating that enemy has to do
+        // Define amount of rotation the enemy has to do
         let amountToRotate = atan2(deltaY, deltaX)
         
-        //rotate the enemy
+        // Rotate the enemy
         enemies.zRotation = amountToRotate
     }
     
     //making enemies spawn by themselves
     func aNewLevel() {
-        
         lvlNum += 1
         
-        //if scene has action - remove it (nececarry for leveling up)
+        // If scene has action - remove it (nececarry for leveling up)
         if self.action(forKey: "spawnYourFoe") != nil {
             self.removeAction(forKey: "spawnYourFoe")
         }
@@ -376,38 +391,38 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.run(constantSpawn, withKey: "spawnYourFoe")
     }
     
-    //executing bulletsFired method when touching the screen
+    // Executing bulletsFired method when touching the screen
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        
-        if currentGameState == .startScreen {
+        switch currentGameState {
+        case .startScreen:
             startGame()
-        }
-
-        // if game is on - fire bullets
-        if currentGameState == .gameOn {
+        case .gameOn:
             bulletsFired()
+        default:
+            break
         }
     }
-    
+
     //effecting player's position by dragging our finger on the screen
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
-        for touch: AnyObject in touches {
-            //touch positions will be in CGPoint
+        for touch in touches {
+            // Touch positions will be in CGPoint
             let touchPosition = touch.location(in: self)
             let lastTouchPosition = touch.previousLocation(in: self)
             let amountDragged = touchPosition.x - lastTouchPosition.x
-            if currentGameState == .gameOn {//if game is on - move player
-            player.position.x += amountDragged //player's position affected by touch points
+            
+            // If game is on, move player by amount dragged
+            if currentGameState == .gameOn {
+                player.position.x += amountDragged
             }
-            //following if statements make sure that our player stays in the game area
-            // maximum and minimum x in our game area
-            if player.position.x > gameArea.maxX - player.size.width/2 {
-                player.position.x = gameArea.maxX - player.size.width/2
-            }
-            if player.position.x < gameArea.minX + player.size.width/2 {
+
+            // Following if statements make sure that our player stays
+            // in the game area's maximum and minimum x
+            if player.position.x > gameArea.maxX - player.size.width / 2 {
+                player.position.x = gameArea.maxX - player.size.width / 2
+            } else if player.position.x < gameArea.minX + player.size.width / 2 {
                 player.position.x = gameArea.minX + player.size.width/2
             }
         }
     }
-  
 }

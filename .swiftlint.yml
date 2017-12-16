@@ -1,0 +1,9 @@
+disabled_rules:
+    trailing_whitespace
+function_body_length:
+    warning: 500
+    error: 700
+type_body_length:
+    warning: 500
+    error: 700
+file_length: 500
