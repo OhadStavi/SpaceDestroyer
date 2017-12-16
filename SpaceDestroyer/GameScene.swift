@@ -13,27 +13,26 @@ var score = 0 //score variable declared public to all scenes
 
 class GameScene: SKScene, SKPhysicsContactDelegate {
     
-    //setting up a score label
+    // Setting up labels
     let scoreLbl = Font.hebrew.labelNode //SpriteKit label object
-    
     let goLbl = Font.hebrew.labelNode
     
-    //setting up our lvl system
+    // Setting up our Level system
     var lvlNum = 1
     
-    //setting up our lives system
+    // Setting up our Lives system
     var lives = 3
     var livesLbl = Font.hebrew.labelNode
     
-    //connecting player image and defining it - declared globally
-    //so we can work with our player in multiple methods
+    // Connecting player image and defining it - declared globally
+    // so we can work with our player in multiple methods
     let player = SKSpriteNode(imageNamed: "playerShip")
     
-    //global declaring our soundeffect will prevent it from being lagged when played
+    // Global declaring our soundeffect will prevent it from being lagged when played
     let shotSound = SKAction.playSoundFileNamed("laserbeam.wav", waitForCompletion: false)
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
     
-    //creating an enum to present our game states
+    // Creating an enum to present our game states
     enum GameStates {
         case startScreen //before the game
         case gameOn //when game occurs
@@ -42,9 +41,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     var currentGameState = GameStates.startScreen
     
-    
-    //defining physics categories - which physics bodies will interact with which
-    //categories are ordered in numbers presented in binary (b)
+    // Defining physics categories - which physics bodies will interact with which
+    // categories are ordered in numbers presented in binary (b)
     struct PhysicsCatgories {
         static let None: UInt32 = 0
         static let Player: UInt32 = 0b1//1
