@@ -107,8 +107,8 @@ class GameOverScene: SKScene {
             }
           
             if shareLbl.contains(touchPoints) {
-                let alert = UIAlertController(title: "Don't Keep It To Yourself,",
-                                              message: "Share Your Score Online!",
+                let alert = UIAlertController(title: "אל תשמור הכל לעצמך,",
+                                              message: "שתף את תוצאתך אונליין עכשיו!",
                                               preferredStyle: UIAlertControllerStyle.alert)
                 let fbAction = UIAlertAction(title: "Facebook", style: .default, handler: nil)
                 let twAction = UIAlertAction(title: "Twitter", style: .default, handler: nil)

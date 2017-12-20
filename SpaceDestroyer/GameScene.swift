@@ -27,10 +27,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     var lives = 3
     var livesLbl = Font.hebrew.labelNode
     
-    // Connecting player image and defining it - declared globally
-    // so we can work with our player in multiple methods
+    // Defining new image object
     let player = SKSpriteNode(imageNamed: "playerShip")
+    let bullet = SKSpriteNode(imageNamed: "bullet")
     
+    //setting powerCoin system
+    let weaponLvl =  0
+    
+   
     // Global declaring our soundeffect will prevent it from being lagged when played
     let shotSound = SKAction.playSoundFileNamed("laserbeam.wav", waitForCompletion: false)
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
@@ -52,6 +56,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         static let Player: UInt32 = 0b1 //1
         static let Bullet: UInt32 = 0b10 //2
         static let Enemies: UInt32 = 0b100 //4
+        static let Power: UInt32 = 0b101 //5
     }
     
     // next two funcs generating a random number that our enemies will spawn from
@@ -110,8 +115,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         //assigning our player to Player's Physics Catergory
         player.physicsBody!.categoryBitMask = PhysicsCatgories.Player
+        
         //preventing player physics to collide with other phyiscs objects
         player.physicsBody!.collisionBitMask = PhysicsCatgories.None
+        
         //defining which of our physical objects our player can be in contact with
         player.physicsBody!.contactTestBitMask = PhysicsCatgories.Enemies
         self.addChild(player) // execute
@@ -212,6 +219,10 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
+    func powerUp() {
+        
+    }
+    
     // Handle what happens when 2 objects comes collide with each other
     func didBegin(_ contact: SKPhysicsContact) {
         //instead of defining our objects as bodyA and bodyB every time,
@@ -257,9 +268,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             physBody1.node?.removeFromParent()//delete the bullet
             physBody2.node?.removeFromParent()//delete the enemy
         }
+        
+        // If the player hit the power coin
+        if physBody1.categoryBitMask == PhysicsCatgories.Player &&
+            physBody2.categoryBitMask == PhysicsCatgories.Power &&
+            (physBody2.node?.position.y)! < self.size.height {
+            
+            scoreUp()
+            physBody2.node?.removeFromParent()//delete the power coin
+        }
     }
     
-    func explosionIsSpawned(spawnPosition: CGPoint) {
+    private func explosionIsSpawned(spawnPosition: CGPoint) {
         let explosion = SKSpriteNode(imageNamed: "explosion")
         explosion.position = spawnPosition
         explosion.zPosition = 3
@@ -274,13 +294,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(explosion)
     }
     
-    func bulletsFired() {
-        let bullet = SKSpriteNode(imageNamed: "bullet")
+    let weapons = ["bullet", "bullet1", "bullet2"]
+    
+    private func bulletsFired() {
         bullet.name = "Bullet"
         bullet.setScale(1)
         bullet.position = player.position
         bullet.zPosition = 1
-        self.addChild(bullet)
+        addChild(bullet)
         
         let physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
         physicsBody.affectedByGravity = false
@@ -297,16 +318,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //execute sequence
         bullet.run(actionSequence)
     }
-
-    // spawning our enemies randomly on the screen
-    func enemiesSpawnedAtRandom() {
-        // Make sure game state is on
-        guard currentGameState == .gameOn else {
-            print("Game is not running, not spawning...")
-            return
-        }
-
-        // Setting up random starting and ending point for our enemies to spawn from
+    
+    private func elementSpawned(element: String) {
+        // Setting up random starting and ending point for our ojects to spawn from
         let randomXStartPoint = random(min: gameArea.minX, max: gameArea.maxX)
         let randomXEndingPoint = random(min: gameArea.minX, max: gameArea.maxX)
         
@@ -315,36 +329,48 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let endingPoint = CGPoint(x: randomXEndingPoint, y: -self.size.height)
         
         // Setting up our enemies
-        let enemies = SKSpriteNode(imageNamed: "enemyShip")
-        enemies.name = "Enemy"
-        enemies.setScale(1)
-        enemies.position = startPoint
-        enemies.zPosition = 2
+        let object = SKSpriteNode(imageNamed: element)
+        object.name = element
+        
+        object.position = startPoint
+        object.zPosition = 2
         
         // Setting up enemies physics
-        let physicsBody = SKPhysicsBody(rectangleOf: enemies.size)
+        let physicsBody = SKPhysicsBody(rectangleOf: object.size)
+        switch element {
+        case "enemyShip":
+            physicsBody.categoryBitMask = PhysicsCatgories.Enemies
+            physicsBody.contactTestBitMask = PhysicsCatgories.Player | PhysicsCatgories.Bullet
+            object.setScale(1)
+            
+        case "powerUp":
+            physicsBody.categoryBitMask = PhysicsCatgories.Power
+            physicsBody.contactTestBitMask = PhysicsCatgories.Player
+            object.setScale(0.3)
+        default:
+            break
+        }
+        
         physicsBody.affectedByGravity = false
-        physicsBody.categoryBitMask = PhysicsCatgories.Enemies
         physicsBody.collisionBitMask = PhysicsCatgories.None
-        physicsBody.contactTestBitMask = PhysicsCatgories.Player | PhysicsCatgories.Bullet
-        enemies.physicsBody = physicsBody
-        self.addChild(enemies)
+        object.physicsBody = physicsBody
+        self.addChild(object)
         
         // Move enemy to its end point
-        let enemyEndPoint = SKAction.move(to: endingPoint, duration: 3)
-
+        let elementEndPoint = SKAction.move(to: endingPoint, duration: 3)
+        
         // once enemy gets to ending point - remove from screen
-        let enemyDeleted = SKAction.removeFromParent()
-
+        let elementDeleted = SKAction.removeFromParent()
+        
         // If enemy passed the screen without getting shot, lose 1 life
-        let missedEnemy = SKAction.run(losingLives)
-
+        let missedElement = SKAction.run(losingLives)
+        
         // Define enemy sequence of actions
-        let enemyActionSequence = SKAction.sequence([enemyEndPoint, enemyDeleted, missedEnemy])
-
+        let elementActionSequence = SKAction.sequence([elementEndPoint, elementDeleted, missedElement])
+        
         // Spawn enemy
-        enemies.run(enemyActionSequence)
-
+        object.run(elementActionSequence)
+        
         // Rotate our enemy to face it's current course,
         // and figure out the diffrence between startPoint.x/y to endingPoint.x/y
         let deltaX = endingPoint.x - startPoint.x
@@ -354,7 +380,29 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let amountToRotate = atan2(deltaY, deltaX)
         
         // Rotate the enemy
-        enemies.zRotation = amountToRotate
+        object.zRotation = amountToRotate
+    }
+
+    
+    // spawning our enemies randomly on the screen
+    func spawnEnemy() {
+        // Make sure game state is on
+        guard currentGameState == .gameOn else {
+            print("Game is not running, not spawning...")
+            return
+        }
+        
+        elementSpawned(element: "enemyShip")
+    }
+    
+    func spawnPowerUp() {
+        // Make sure game state is on
+        guard currentGameState == .gameOn else {
+            print("Game is not running, not spawning...")
+            return
+        }
+        
+        elementSpawned(element: "powerUp")
     }
     
     func levelUp() {
@@ -388,14 +436,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         DispatchQueue.main.asyncAfter(wallDeadline: .now() + 1.5) {
             if self.didPlayerEnter {
-                self.startSpwaning()
+                self.startSpawning()
             } else {
                 self.goLbl.run(.fadeOut(withDuration: 0.3))
 
                 let startGameSeq = SKAction.sequence([
                     .move(to: CGPoint(x: self.size.width * 0.5, y: self.size.height * 0.1), duration: 0.5),
                     .wait(forDuration: 1.0),
-                    .run(self.startSpwaning)
+                    .run(self.startSpawning)
                     ])
 
                 self.player.run(startGameSeq)
@@ -403,8 +451,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    // Making enemies spawn by themselves
-    func startSpwaning() {
+    // Making enemies & powerups spawn by themselves
+    func startSpawning() {
         didPlayerEnter = true
         currentGameState = .gameOn
         
@@ -445,20 +493,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         var lvlDuration: TimeInterval = 1.8 - (Double(lvlNum - 1) * 0.5)
         lvlDuration = max(lvlDuration, 0.5)
 
-        // Enemy spawned
-        let enemiesSpawned = SKAction.run(enemiesSpawnedAtRandom)
+        // Element spawned
+        let enemiesSpawned = SKAction.run(spawnEnemy)
+        let powerUpSpawned = SKAction.run(spawnPowerUp)
         
-        // Time duration between spawns
+        // Time duration between spawns"
         let timeBetweenSpawns = SKAction.wait(forDuration: lvlDuration)
+        let powerUpTimeOfSpawns = SKAction.wait(forDuration: 4)
         
         // Enemy spawn sequence - first spawn, then wait
         let spawnSequence = SKAction.sequence([timeBetweenSpawns, enemiesSpawned])
-        
+        let powerUpSequence = SKAction.sequence([powerUpTimeOfSpawns, powerUpSpawned])
         // Making our sequence repeat itself constantly
         let constantSpawn = SKAction.repeatForever(spawnSequence)
+        let powerUpForever = SKAction.repeatForever(powerUpSequence)
         
         // Execute
         self.run(constantSpawn, withKey: "spawnYourFoe")
+        self.run(powerUpForever)
+        
     }
     
     // Executing bulletsFired method when touching the screen
@@ -492,7 +545,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
                 player.position.x = gameArea.maxX - player.size.width / 2
             } else if player.position.x < gameArea.minX + player.size.width / 2 {
                 player.position.x = gameArea.minX + player.size.width/2
+                
+                }
             }
         }
     }
-}
