@@ -8,6 +8,7 @@
 
 import Foundation
 import SpriteKit
+import FBSDKShareKit
 
 class GameOverScene: SKScene {
     let gameOverSound = SKAction.playSoundFileNamed("gameover.mp3", waitForCompletion: false)
@@ -110,13 +111,25 @@ class GameOverScene: SKScene {
                 let alert = UIAlertController(title: "אל תשמור הכל לעצמך,",
                                               message: "שתף את תוצאתך אונליין עכשיו!",
                                               preferredStyle: UIAlertControllerStyle.alert)
-                let fbAction = UIAlertAction(title: "Facebook", style: .default, handler: nil)
-                let twAction = UIAlertAction(title: "Twitter", style: .default, handler: nil)
-                let gpAction = UIAlertAction(title: "Google+", style: .default, handler: nil)
+                let fbAction = UIAlertAction(title: "Facebook", style: .default) { _ in
+                    guard let rootVC = self.view?.window?.rootViewController else { return }
+                    let share = FBSDKShareLinkContent()
+                    share.contentURL = URL(string: "https://www.wildguitars.co.il/secondhand.html")!
+                    
+                    FBSDKShareDialog.show(from: rootVC, with: share, delegate: nil)
+                }
+
+                let twAction = UIAlertAction(title: "Twitter", style: .default) { _ in
+                    let message = "Congratulations! You Space Destroyed some stuff with \(score) points."
+                    let url = "https://twitter.com/intent/tweet?text=\(message)&url=http://google.com"
+                                .addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed)!
+
+                    UIApplication.shared.open(URL(string: url)!, options: [:], completionHandler: nil)
+                }
+
                 let cancel = UIAlertAction(title: "Cancel", style: .cancel, handler: nil)
                 alert.addAction(fbAction)
                 alert.addAction(twAction)
-                alert.addAction(gpAction)
                 alert.addAction(cancel)
                 self.view?.window?.rootViewController?.present(alert, animated: true, completion: nil)
             }

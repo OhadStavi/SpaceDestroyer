@@ -166,8 +166,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func losingLives() {
-        print("losing lives")
-
         lives -= 1
         livesLbl.text = String(repeating: "❤️", count: lives)
         

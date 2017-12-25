@@ -13,6 +13,9 @@
 		9F6386F51FEA5CA600487A34 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F6386F41FEA5CA600487A34 /* Assets.xcassets */; };
 		9F6642AD1FF12822008815D2 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6642AC1FF12822008815D2 /* Bullet.swift */; };
 		9F6642AF1FF13122008815D2 /* theboldfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F6642AE1FF13122008815D2 /* theboldfont.ttf */; };
+		9F6642B31FF13553008815D2 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B01FF13551008815D2 /* Bolts.framework */; };
+		9F6642B41FF13553008815D2 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B11FF13552008815D2 /* FBSDKShareKit.framework */; };
+		9F6642B51FF13553008815D2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B21FF13553008815D2 /* FBSDKCoreKit.framework */; };
 		9F8655C01FE2E3A000C4894E /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F8655BF1FE2E3A000C4894E /* explosion.wav */; };
 		9F929E2B1FE3CD86004BEA74 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */; };
 		9F929E2D1FE3E412004BEA74 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */; };
@@ -34,6 +37,9 @@
 		9F6386F41FEA5CA600487A34 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F6642AC1FF12822008815D2 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 		9F6642AE1FF13122008815D2 /* theboldfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = theboldfont.ttf; path = SpaceDestroyer/Resources/Fonts/theboldfont.ttf; sourceTree = SOURCE_ROOT; };
+		9F6642B01FF13551008815D2 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
+		9F6642B11FF13552008815D2 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
+		9F6642B21FF13553008815D2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
 		9F8655BF1FE2E3A000C4894E /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
 		9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
 		9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
@@ -55,6 +61,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9F6642B41FF13553008815D2 /* FBSDKShareKit.framework in Frameworks */,
+				9F6642B51FF13553008815D2 /* FBSDKCoreKit.framework in Frameworks */,
+				9F6642B31FF13553008815D2 /* Bolts.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -109,6 +118,9 @@
 		9FD7A9AD1FE034AB00FA8227 /* SpaceDestroyer */ = {
 			isa = PBXGroup;
 			children = (
+				9F6642B01FF13551008815D2 /* Bolts.framework */,
+				9F6642B21FF13553008815D2 /* FBSDKCoreKit.framework */,
+				9F6642B11FF13552008815D2 /* FBSDKShareKit.framework */,
 				9F0D2DEA1FE5AFF00073CC10 /* Resources */,
 				9FD7A9AE1FE034AB00FA8227 /* AppDelegate.swift */,
 				9FD7A9B01FE034AB00FA8227 /* GameScene.sks */,
@@ -118,11 +130,11 @@
 				9F345DE91FE3BE3400523419 /* GameOverScene.swift */,
 				9FD7A9B61FE034AB00FA8227 /* GameViewController.swift */,
 				9F0D2DF31FE5B3DF0073CC10 /* Font.swift */,
+				9F6642AC1FF12822008815D2 /* Bullet.swift */,
 				9F6386F41FEA5CA600487A34 /* Assets.xcassets */,
 				9FD7A9B81FE034AB00FA8227 /* Main.storyboard */,
 				9FD7A9BD1FE034AB00FA8227 /* LaunchScreen.storyboard */,
 				9FD7A9C01FE034AB00FA8227 /* Info.plist */,
-				9F6642AC1FF12822008815D2 /* Bullet.swift */,
 			);
 			path = SpaceDestroyer;
 			sourceTree = "<group>";
@@ -368,6 +380,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SpaceDestroyer",
+				);
 				INFOPLIST_FILE = SpaceDestroyer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -383,6 +399,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/SpaceDestroyer",
+				);
 				INFOPLIST_FILE = SpaceDestroyer/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
