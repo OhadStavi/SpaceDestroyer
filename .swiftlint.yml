@@ -4,6 +4,6 @@ function_body_length:
     warning: 500
     error: 700
 type_body_length:
-    warning: 500
-    error: 700
-file_length: 500
+    warning: 1000
+    error: 1200
+file_length: 1000

@@ -29,12 +29,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Defining new image object
     let player = SKSpriteNode(imageNamed: "playerShip")
-    let bullet = SKSpriteNode(imageNamed: "bullet")
     
     //setting powerCoin system
-    let weaponLvl =  0
+    private var weaponLvl = 1 {
+        didSet {
+            print("Now using \(bullet.name) Bullet")
+        }
+    }
+
+    var bullet: Bullet {
+        return Bullet.forLevel(weaponLvl)
+    }
     
-   
     // Global declaring our soundeffect will prevent it from being lagged when played
     let shotSound = SKAction.playSoundFileNamed("laserbeam.wav", waitForCompletion: false)
     let explosionSound = SKAction.playSoundFileNamed("explosion.wav", waitForCompletion: false)
@@ -154,6 +160,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     private func startGame() {
         currentGameState = .gameOn
         didPlayerEnter = false
+        weaponLvl = 1
 
         levelUp()
     }
@@ -178,6 +185,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //declaring that our game is over
         currentGameState = .gameOver
         clearGame()
+        weaponLvl = 1
         
         // change scene when game is over
         let changeSceneAction = SKAction.run(moveScene)
@@ -209,7 +217,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.view!.presentScene(sceneDestination, transition: sceneTransition)
     }
 
-    private func scoreUp() {
+    private func powerUp() {
         score += 1
         scoreLbl.text = "ניקוד: \(score)"
 
@@ -219,11 +227,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
     
-    func powerUp() {
-        
-    }
-    
-    // Handle what happens when 2 objects comes collide with each other
+    // Handle what happens when 2 objects collide with each other
     func didBegin(_ contact: SKPhysicsContact) {
         //instead of defining our objects as bodyA and bodyB every time,
         //we organize them with an if statement which automatically does the
@@ -260,7 +264,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if physBody1.categoryBitMask == PhysicsCatgories.Bullet &&
            physBody2.categoryBitMask == PhysicsCatgories.Enemies &&
            (physBody2.node?.position.y)! < self.size.height {
-            scoreUp()
+            powerUp()
             if physBody2.node != nil {
                 //explosion is spawned right at enemy's position
                 explosionIsSpawned(spawnPosition: physBody2.node!.position)
@@ -274,7 +278,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             physBody2.categoryBitMask == PhysicsCatgories.Power &&
             (physBody2.node?.position.y)! < self.size.height {
             
-            scoreUp()
+            powerUp()
+            weaponLvl += 1
+
             physBody2.node?.removeFromParent()//delete the power coin
         }
     }
@@ -294,29 +300,25 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.addChild(explosion)
     }
     
-    let weapons = ["bullet", "bullet1", "bullet2"]
-    
     private func bulletsFired() {
-        bullet.name = "Bullet"
-        bullet.setScale(1)
-        bullet.position = player.position
-        bullet.zPosition = 1
-        addChild(bullet)
+        let sprite = bullet.sprite
+        sprite.position = player.position
+        addChild(sprite)
         
-        let physicsBody = SKPhysicsBody(rectangleOf: bullet.size)
+        let physicsBody = SKPhysicsBody(rectangleOf: sprite.size)
         physicsBody.affectedByGravity = false
         physicsBody.categoryBitMask = PhysicsCatgories.Bullet
         physicsBody.collisionBitMask = PhysicsCatgories.None
         physicsBody.contactTestBitMask = PhysicsCatgories.Enemies
-        bullet.physicsBody = physicsBody
+        sprite.physicsBody = physicsBody
         
         //defining the bullet's actions
-        let bulletMovement = SKAction.moveTo(y: self.size.height + bullet.size.height, duration: 1)
+        let bulletMovement = SKAction.moveTo(y: self.size.height + sprite.size.height, duration: 1)
         let bulletDeleted = SKAction.removeFromParent()
         //defining a sequence for our bullet's actions
         let actionSequence = SKAction.sequence([shotSound, bulletMovement, bulletDeleted])
         //execute sequence
-        bullet.run(actionSequence)
+        sprite.run(actionSequence)
     }
     
     private func elementSpawned(element: String) {
@@ -330,13 +332,14 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Setting up our enemies
         let object = SKSpriteNode(imageNamed: element)
-        object.name = element
+        object.name = "Enemy"
         
         object.position = startPoint
         object.zPosition = 2
         
         // Setting up enemies physics
         let physicsBody = SKPhysicsBody(rectangleOf: object.size)
+        
         switch element {
         case "enemyShip":
             physicsBody.categoryBitMask = PhysicsCatgories.Enemies
@@ -382,7 +385,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Rotate the enemy
         object.zRotation = amountToRotate
     }
-
     
     // spawning our enemies randomly on the screen
     func spawnEnemy() {
