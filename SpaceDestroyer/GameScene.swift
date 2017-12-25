@@ -166,6 +166,8 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     }
     
     private func losingLives() {
+        print("losing lives")
+
         lives -= 1
         livesLbl.text = String(repeating: "❤️", count: lives)
         
@@ -217,14 +219,18 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         self.view!.presentScene(sceneDestination, transition: sceneTransition)
     }
 
-    private func powerUp() {
+    private func scoreUp() {
         score += 1
         scoreLbl.text = "ניקוד: \(score)"
-
+        
         // Level up when score is even
         if score % 2 == 0 {
             levelUp()
         }
+    }
+    
+    private func powerUp() {
+        weaponLvl += 1
     }
     
     // Handle what happens when 2 objects collide with each other
@@ -264,7 +270,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         if physBody1.categoryBitMask == PhysicsCatgories.Bullet &&
            physBody2.categoryBitMask == PhysicsCatgories.Enemies &&
            (physBody2.node?.position.y)! < self.size.height {
-            powerUp()
+            
+            scoreUp()
+            
             if physBody2.node != nil {
                 //explosion is spawned right at enemy's position
                 explosionIsSpawned(spawnPosition: physBody2.node!.position)
@@ -279,7 +287,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             (physBody2.node?.position.y)! < self.size.height {
             
             powerUp()
-            weaponLvl += 1
 
             physBody2.node?.removeFromParent()//delete the power coin
         }
@@ -333,7 +340,6 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Setting up our enemies
         let object = SKSpriteNode(imageNamed: element)
         object.name = "Enemy"
-        
         object.position = startPoint
         object.zPosition = 2
         
