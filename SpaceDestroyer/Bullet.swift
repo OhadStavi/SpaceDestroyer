@@ -10,23 +10,29 @@ import Foundation
 import SpriteKit
 
 enum Bullet {
-    case regular
-    case metal
-    case saber
+    case white
+    case brown
+    case aqua
+    case iron
+    case nature
     
     public static func forLevel(_ level: Int) -> Bullet {
         switch level {
-        case 1: return .regular
-        case 2: return .metal
-        default: return .saber
+        case 1: return .white
+        case 2: return .brown
+        case 3: return .aqua
+        case 4: return .iron
+        default: return .nature
         }
     }
     
     private var scale: CGFloat {
         switch self {
-        case .regular: return 1.0
-        case .metal: return 2.5
-        case .saber: return 0.25
+        case .white: return 0.2
+        case .brown: return 0.3
+        case .aqua: return 0.4
+        case .iron: return 0.4
+        case .nature: return 0.4
         }
     }
     
@@ -34,9 +40,11 @@ enum Bullet {
         var name: String
         
         switch self {
-        case .regular: name = "bullet1"
-        case .metal: name = "bullet2"
-        case .saber: name = "bullet3"
+        case .white: name = "whiteEgg"
+        case .brown: name = "brownEgg"
+        case .aqua: name = "aquaEgg"
+        case .iron: name = "ironEgg"
+        case .nature: name = "natureEgg"
         }
         
         let node = SKSpriteNode(imageNamed: name)
@@ -49,9 +57,11 @@ enum Bullet {
     
     public var name: String {
         switch self {
-        case .regular: return "Regular"
-        case .metal: return "Metal"
-        case .saber: return "Saber"
+        case .white: return "White"
+        case .brown: return "Brown"
+        case .aqua: return "Aqua"
+        case .iron: return "Iron"
+        case .nature: return "Nature"
         }
     }
 }

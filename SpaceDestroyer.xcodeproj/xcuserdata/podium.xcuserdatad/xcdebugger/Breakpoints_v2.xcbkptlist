@@ -20,29 +20,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpaceDestroyer/GameScene.swift"
-            timestampString = "535900465.854384"
+            timestampString = "536073358.080822"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "523"
-            endingLineNumber = "523"
-            landmarkName = "touchesBegan(_:with:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "SpaceDestroyer/GameScene.swift"
-            timestampString = "535900465.854489"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "282"
-            endingLineNumber = "282"
-            landmarkName = "didBegin(_:)"
-            landmarkType = "7">
+            startingLineNumber = "583"
+            endingLineNumber = "583"
+            landmarkName = "GameScene"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

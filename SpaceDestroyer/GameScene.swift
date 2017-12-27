@@ -24,16 +24,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
     
     // Setting up our Lives system
     var didPlayerEnter = false
-    var lives = 3
+    var lives = 5
     var livesLbl = Font.hebrew.labelNode
     
     // Defining new image object
-    let player = SKSpriteNode(imageNamed: "playerShip")
+    let player = SKSpriteNode(imageNamed: "superChicken")
     
     //setting powerCoin system
     private var weaponLvl = 1 {
         didSet {
-            print("Now using \(bullet.name) Bullet")
+            print("Now using \(bullet.name) Egg")
         }
     }
 
@@ -103,15 +103,27 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         //initiating SKPhysicsContactDelegate in our GameScene
         self.physicsWorld.contactDelegate = self
         
+        // Inserting our background in a for loop will make it become scrollable
+        // and will provide an illusion of it "moving"
+        
+        for i in 0...1 {
         // Connecting b.g img from assets
         let background = SKSpriteNode(imageNamed: "background")
         background.size = self.size //setting the b.g's size to match sence
-        background.position = CGPoint(x: self.size.width/2, y: self.size.height/2) //b.g position in scene
+        background.anchorPoint = CGPoint(x: 0.5, y: 0) //Defining default anchor points
+        // Second b.g position in scene - top of screen (y position depends on the index position)
+        background.position = CGPoint(x: self.size.width/2,
+                                      y: self.size.height * CGFloat(i))
         background.zPosition = 0  //b.g position related to object
+        background.name = "Background"
         self.addChild(background) //excecute
-        player.setScale(1) // setting our player's icon size
+            
+        }
+        
+        player.setScale(0.5) // setting our player's icon size
         player.position = CGPoint(x: self.size.width/2, y: 0 - player.size.height) //player's position in background
-        player.zPosition = 2 //layering - if more than zero will be above b.g
+        player.zPosition = 2 // Layering
+        player.zRotation = -44.7
         
         //defining player's physicsBody
         player.physicsBody = SKPhysicsBody(rectangleOf: player.size)
@@ -146,15 +158,47 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         goLbl.zPosition = 1
         self.addChild(goLbl)
         
-        livesLbl.text = "❤️❤️❤️"
+        livesLbl.text = "❤️❤️❤️❤️❤️"
         livesLbl.fontSize = 70
         livesLbl.fontColor = SKColor.white
         livesLbl.horizontalAlignmentMode = SKLabelHorizontalAlignmentMode.right
-        livesLbl.position = CGPoint(x: self.size.width*0.85, y: self.size.height + livesLbl.frame.size.height)
+        livesLbl.position = CGPoint(x: self.size.width*0.85,
+                                    y: self.size.height + livesLbl.frame.size.height)
         livesLbl.zPosition = 100
         self.addChild(livesLbl)
         
         startGame()
+    }
+    
+    var lastUpdated: TimeInterval = 0 // Storing time of last frame (will be equaled to current time
+    var deltaFrameTime: TimeInterval = 0 // Delta time between frames
+    var amountToMove: CGFloat = 700 // Defining how many points background will move per second
+    
+    // Update func runs everytime that there is a new game loop and will
+    // update our background's position
+    override func update(_ currentTime: TimeInterval) {
+        
+        // When current time runs again - last updated is the last current time stored.
+        if lastUpdated == 0 {
+            lastUpdated = currentTime
+        } else {
+            deltaFrameTime = currentTime - lastUpdated
+            lastUpdated = currentTime
+        }
+        // Background's movement - 600 * time has passed
+        let amountToMoveBG = amountToMove * CGFloat(deltaFrameTime)
+        self.enumerateChildNodes(withName: "Background") { background, _ in
+            
+            // Scroll background ONLY during game
+            if self.currentGameState == GameStates.gameOn {
+            background.position.y -= amountToMoveBG
+            }
+            
+        // When background let the screen's bottom - move to top
+            if background.position.y < -self.size.height {
+                background.position.y += self.size.height*2
+            }
+        }
     }
     
     private func startGame() {
@@ -174,8 +218,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         let livesSequence = SKAction.sequence([scaleUp, scaleDown])
         livesLbl.run(livesSequence)
         
-        // If player ran out of life - run game over
-        if lives == 0 {
+        if lives > 0 {
+             let ouchSound = SKAction.playSoundFileNamed("ouch.wav", waitForCompletion: false)
+            let fadeOut = SKAction.fadeOut(withDuration: 0.2)
+            let fadeIn = SKAction.fadeIn(withDuration: 0.2)
+            let fadeSequence = SKAction.sequence([fadeOut, fadeIn])
+            let ouchSeq = SKAction.sequence([ouchSound])
+            let fadeAction = SKAction.repeat(fadeSequence, count: 5)
+            player.run(ouchSeq)
+            player.run(fadeAction)
+        } else {
             gameOver()
         }
     }
@@ -222,7 +274,9 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         scoreLbl.text = "ניקוד: \(score)"
         
         // Level up when score is even
-        if score % 2 == 0 {
+        if score == lvlNum * 4 {
+            levelUp()
+        } else if lvlNum == 3 && score == lvlNum * 6 {
             levelUp()
         }
     }
@@ -259,9 +313,11 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
             explosionIsSpawned(spawnPosition: physBody2.node!.position)//calling the function in the enemy's position
             }
             
-            physBody1.node?.removeFromParent()//delete the player
             physBody2.node?.removeFromParent()//delete the enemy
-            gameOver()//run game over
+            losingLives()
+            if lives < 1 {
+                 physBody1.node?.removeFromParent()//delete the player
+            }
         }
         
         //if the bullet hits the enemy and enemy IS on the screen
@@ -344,16 +400,30 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // Setting up enemies physics
         let physicsBody = SKPhysicsBody(rectangleOf: object.size)
         
+        // Rotate our enemy to face it's current course,
+        // and figure out the diffrence between startPoint.x/y to endingPoint.x/y
+        let deltaX = endingPoint.x - startPoint.x
+        let deltaY = endingPoint.y - startPoint.y
+        
+        // Define amount of rotation the enemy has to do
+        let amountToRotate = atan2(deltaY, deltaX)
+        
         switch element {
         case "enemyShip":
             physicsBody.categoryBitMask = PhysicsCatgories.Enemies
             physicsBody.contactTestBitMask = PhysicsCatgories.Player | PhysicsCatgories.Bullet
             object.setScale(1)
+            // Rotate the enemy
+            object.zRotation = amountToRotate
             
         case "powerUp":
             physicsBody.categoryBitMask = PhysicsCatgories.Power
             physicsBody.contactTestBitMask = PhysicsCatgories.Player
-            object.setScale(0.3)
+            object.setScale(0.5)
+            let powerUpEndPoint = SKAction.move(to: endingPoint, duration: 5)
+            let powerMoveSeq = SKAction.sequence([powerUpEndPoint])
+            object.run(powerMoveSeq)
+            
         default:
             break
         }
@@ -369,25 +439,16 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         // once enemy gets to ending point - remove from screen
         let elementDeleted = SKAction.removeFromParent()
         
+        /*
         // If enemy passed the screen without getting shot, lose 1 life
         let missedElement = SKAction.run(losingLives)
-        
+        */
         // Define enemy sequence of actions
-        let elementActionSequence = SKAction.sequence([elementEndPoint, elementDeleted, missedElement])
+        let elementActionSequence = SKAction.sequence([elementEndPoint, elementDeleted])
         
         // Spawn enemy
         object.run(elementActionSequence)
         
-        // Rotate our enemy to face it's current course,
-        // and figure out the diffrence between startPoint.x/y to endingPoint.x/y
-        let deltaX = endingPoint.x - startPoint.x
-        let deltaY = endingPoint.y - startPoint.y
-        
-        // Define amount of rotation the enemy has to do
-        let amountToRotate = atan2(deltaY, deltaX)
-        
-        // Rotate the enemy
-        object.zRotation = amountToRotate
     }
     
     // spawning our enemies randomly on the screen
@@ -496,7 +557,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Dynamically calculate difficulty of level as the game progresses
         // with a hard bottom limit of 0.5
-        var lvlDuration: TimeInterval = 1.8 - (Double(lvlNum - 1) * 0.5)
+        var lvlDuration: TimeInterval = 2.4 - (Double(lvlNum - 1) * 0.5)
         lvlDuration = max(lvlDuration, 0.5)
 
         // Element spawned
@@ -505,7 +566,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         
         // Time duration between spawns"
         let timeBetweenSpawns = SKAction.wait(forDuration: lvlDuration)
-        let powerUpTimeOfSpawns = SKAction.wait(forDuration: 4)
+        let powerUpTimeOfSpawns = SKAction.wait(forDuration: 8)
         
         // Enemy spawn sequence - first spawn, then wait
         let spawnSequence = SKAction.sequence([timeBetweenSpawns, enemiesSpawned])
@@ -532,7 +593,7 @@ class GameScene: SKScene, SKPhysicsContactDelegate {
         }
     }
 
-    //effecting player's position by dragging our finger on the screen
+    // Effecting player's position by dragging our finger on the screen
     override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
         for touch in touches {
             // Touch positions will be in CGPoint
