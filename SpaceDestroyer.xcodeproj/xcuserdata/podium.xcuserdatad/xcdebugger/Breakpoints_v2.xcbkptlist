@@ -20,13 +20,13 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "SpaceDestroyer/GameScene.swift"
-            timestampString = "536073358.080822"
+            timestampString = "536959345.0056"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "583"
-            endingLineNumber = "583"
-            landmarkName = "GameScene"
-            landmarkType = "3">
+            startingLineNumber = "593"
+            endingLineNumber = "593"
+            landmarkName = "levelUp()"
+            landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

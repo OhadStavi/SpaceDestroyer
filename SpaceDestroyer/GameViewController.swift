@@ -11,18 +11,17 @@ import SpriteKit
 import GameplayKit
 import AVFoundation//audio foundation
 
-class GameViewController: UIViewController {
+var backTrackAudio = AVAudioPlayer()
 
-    //audio player definition
-    var backTrackAudio = AVAudioPlayer()
+class GameViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         // which audio track should we play
         let filePath = Bundle.main.path(forResource: "menusound", ofType: "wav")
         let audioURL = URL(fileURLWithPath: filePath!)
-
+        
         // if can play - prepare to play, if can't, print "can't"
         do {
             backTrackAudio = try AVAudioPlayer(contentsOf: audioURL)
@@ -50,6 +49,10 @@ class GameViewController: UIViewController {
 
         //present scene
         skView.presentScene(scene)
+    }
+    
+    public func changeBGSound(soundName: String, soundType: String) {
+       
     }
 
     override var shouldAutorotate: Bool {

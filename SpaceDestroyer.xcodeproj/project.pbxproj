@@ -7,15 +7,22 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8D2261EE1FF676B50034B37E /* collectCoin.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8D2261ED1FF676B50034B37E /* collectCoin.wav */; };
+		8D2261F11FF92D7F0034B37E /* levels.plist in Resources */ = {isa = PBXBuildFile; fileRef = 8D2261EF1FF903EA0034B37E /* levels.plist */; };
+		8DE885041FFD0F6A00779609 /* yaySound.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 8DE885031FFD0F6A00779609 /* yaySound.mp3 */; };
+		8DE885061FFD13DA00779609 /* imperial.wav in Resources */ = {isa = PBXBuildFile; fileRef = 8DE885051FFD13DA00779609 /* imperial.wav */; };
+		8DEBB1AC1FFCAF4C00F65938 /* Drop.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8DEBB1AB1FFCAF4C00F65938 /* Drop.swift */; };
+		8DFA0C861FF56BEA008F5789 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 8DFA0C851FF56BEA008F5789 /* Assets.xcassets */; };
 		9F0D2DF01FE5B0150073CC10 /* Abraham.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F0D2DEF1FE5B0150073CC10 /* Abraham.ttf */; };
 		9F0D2DF41FE5B3DF0073CC10 /* Font.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F0D2DF31FE5B3DF0073CC10 /* Font.swift */; };
 		9F345DEA1FE3BE3400523419 /* GameOverScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F345DE91FE3BE3400523419 /* GameOverScene.swift */; };
+		9F5F8E041FFFB4E500AFCE3E /* lifesound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F5F8E021FFFB4E400AFCE3E /* lifesound.wav */; };
+		9F5F8E051FFFB4E500AFCE3E /* powerupsound.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F5F8E031FFFB4E500AFCE3E /* powerupsound.wav */; };
 		9F6642AD1FF12822008815D2 /* Bullet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F6642AC1FF12822008815D2 /* Bullet.swift */; };
 		9F6642AF1FF13122008815D2 /* theboldfont.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9F6642AE1FF13122008815D2 /* theboldfont.ttf */; };
 		9F6642B31FF13553008815D2 /* Bolts.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B01FF13551008815D2 /* Bolts.framework */; };
 		9F6642B41FF13553008815D2 /* FBSDKShareKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B11FF13552008815D2 /* FBSDKShareKit.framework */; };
 		9F6642B51FF13553008815D2 /* FBSDKCoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9F6642B21FF13553008815D2 /* FBSDKCoreKit.framework */; };
-		9F7279CF1FF39361005EDE77 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 9F7279CE1FF39361005EDE77 /* Assets.xcassets */; };
 		9F8655C01FE2E3A000C4894E /* explosion.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9F8655BF1FE2E3A000C4894E /* explosion.wav */; };
 		9F929E2B1FE3CD86004BEA74 /* gameover.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = 9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */; };
 		9F929E2D1FE3E412004BEA74 /* MainMenuScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */; };
@@ -32,15 +39,22 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		8D2261ED1FF676B50034B37E /* collectCoin.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = collectCoin.wav; sourceTree = "<group>"; };
+		8D2261EF1FF903EA0034B37E /* levels.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = levels.plist; sourceTree = "<group>"; };
+		8DE885031FFD0F6A00779609 /* yaySound.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = yaySound.mp3; sourceTree = "<group>"; };
+		8DE885051FFD13DA00779609 /* imperial.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = imperial.wav; sourceTree = "<group>"; };
+		8DEBB1AB1FFCAF4C00F65938 /* Drop.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Drop.swift; sourceTree = "<group>"; };
+		8DFA0C851FF56BEA008F5789 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		9F0D2DEF1FE5B0150073CC10 /* Abraham.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Abraham.ttf; sourceTree = "<group>"; };
 		9F0D2DF31FE5B3DF0073CC10 /* Font.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Font.swift; sourceTree = "<group>"; };
 		9F345DE91FE3BE3400523419 /* GameOverScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverScene.swift; sourceTree = "<group>"; };
+		9F5F8E021FFFB4E400AFCE3E /* lifesound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = lifesound.wav; sourceTree = "<group>"; };
+		9F5F8E031FFFB4E500AFCE3E /* powerupsound.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = powerupsound.wav; sourceTree = "<group>"; };
 		9F6642AC1FF12822008815D2 /* Bullet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bullet.swift; sourceTree = "<group>"; };
 		9F6642AE1FF13122008815D2 /* theboldfont.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; name = theboldfont.ttf; path = SpaceDestroyer/Resources/Fonts/theboldfont.ttf; sourceTree = SOURCE_ROOT; };
 		9F6642B01FF13551008815D2 /* Bolts.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Bolts.framework; sourceTree = "<group>"; };
 		9F6642B11FF13552008815D2 /* FBSDKShareKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKShareKit.framework; sourceTree = "<group>"; };
 		9F6642B21FF13553008815D2 /* FBSDKCoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = FBSDKCoreKit.framework; sourceTree = "<group>"; };
-		9F7279CE1FF39361005EDE77 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = ../../../.Trash/Assets.xcassets; sourceTree = "<group>"; };
 		9F8655BF1FE2E3A000C4894E /* explosion.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = explosion.wav; sourceTree = "<group>"; };
 		9F929E2A1FE3CD86004BEA74 /* gameover.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = gameover.mp3; sourceTree = "<group>"; };
 		9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuScene.swift; sourceTree = "<group>"; };
@@ -75,6 +89,7 @@
 		9F0D2DEA1FE5AFF00073CC10 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				9F5F8E011FFFAD9700AFCE3E /* Game Elements */,
 				9F0D2DEC1FE5AFFB0073CC10 /* Fonts */,
 				9F0D2DEB1FE5AFF70073CC10 /* Sounds */,
 			);
@@ -84,6 +99,11 @@
 		9F0D2DEB1FE5AFF70073CC10 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				8DE885051FFD13DA00779609 /* imperial.wav */,
+				8DE885031FFD0F6A00779609 /* yaySound.mp3 */,
+				8D2261ED1FF676B50034B37E /* collectCoin.wav */,
+				9F5F8E021FFFB4E400AFCE3E /* lifesound.wav */,
+				9F5F8E031FFFB4E500AFCE3E /* powerupsound.wav */,
 				9F9F6B121FF3B07700A86432 /* ouch.wav */,
 				9FD7A9E21FE05F6100FA8227 /* laserbeam.wav */,
 				9F8655BF1FE2E3A000C4894E /* explosion.wav */,
@@ -100,6 +120,16 @@
 				9F6642AE1FF13122008815D2 /* theboldfont.ttf */,
 			);
 			path = Fonts;
+			sourceTree = "<group>";
+		};
+		9F5F8E011FFFAD9700AFCE3E /* Game Elements */ = {
+			isa = PBXGroup;
+			children = (
+				8DEBB1AB1FFCAF4C00F65938 /* Drop.swift */,
+				9F0D2DF31FE5B3DF0073CC10 /* Font.swift */,
+				9F6642AC1FF12822008815D2 /* Bullet.swift */,
+			);
+			path = "Game Elements";
 			sourceTree = "<group>";
 		};
 		9FD7A9A21FE034AB00FA8227 = {
@@ -132,12 +162,11 @@
 				9F929E2C1FE3E412004BEA74 /* MainMenuScene.swift */,
 				9F345DE91FE3BE3400523419 /* GameOverScene.swift */,
 				9FD7A9B61FE034AB00FA8227 /* GameViewController.swift */,
-				9F0D2DF31FE5B3DF0073CC10 /* Font.swift */,
-				9F6642AC1FF12822008815D2 /* Bullet.swift */,
-				9F7279CE1FF39361005EDE77 /* Assets.xcassets */,
 				9FD7A9B81FE034AB00FA8227 /* Main.storyboard */,
 				9FD7A9BD1FE034AB00FA8227 /* LaunchScreen.storyboard */,
 				9FD7A9C01FE034AB00FA8227 /* Info.plist */,
+				8D2261EF1FF903EA0034B37E /* levels.plist */,
+				8DFA0C851FF56BEA008F5789 /* Assets.xcassets */,
 			);
 			path = SpaceDestroyer;
 			sourceTree = "<group>";
@@ -202,17 +231,23 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8D2261EE1FF676B50034B37E /* collectCoin.wav in Resources */,
 				9FD7A9BA1FE034AB00FA8227 /* Main.storyboard in Resources */,
 				9FD7A9B11FE034AB00FA8227 /* GameScene.sks in Resources */,
-				9F7279CF1FF39361005EDE77 /* Assets.xcassets in Resources */,
 				9F9F6B131FF3B07700A86432 /* ouch.wav in Resources */,
+				9F5F8E041FFFB4E500AFCE3E /* lifesound.wav in Resources */,
+				8DE885041FFD0F6A00779609 /* yaySound.mp3 in Resources */,
 				9F8655C01FE2E3A000C4894E /* explosion.wav in Resources */,
 				9F929E2F1FE3E595004BEA74 /* menusound.wav in Resources */,
+				8D2261F11FF92D7F0034B37E /* levels.plist in Resources */,
 				9FD7A9E31FE05F6200FA8227 /* laserbeam.wav in Resources */,
 				9FD7A9BF1FE034AB00FA8227 /* LaunchScreen.storyboard in Resources */,
 				9F6642AF1FF13122008815D2 /* theboldfont.ttf in Resources */,
+				8DE885061FFD13DA00779609 /* imperial.wav in Resources */,
+				9F5F8E051FFFB4E500AFCE3E /* powerupsound.wav in Resources */,
 				9FD7A9B31FE034AB00FA8227 /* Actions.sks in Resources */,
 				9F0D2DF01FE5B0150073CC10 /* Abraham.ttf in Resources */,
+				8DFA0C861FF56BEA008F5789 /* Assets.xcassets in Resources */,
 				9F929E2B1FE3CD86004BEA74 /* gameover.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -242,6 +277,7 @@
 			files = (
 				9F929E2D1FE3E412004BEA74 /* MainMenuScene.swift in Sources */,
 				9FD7A9B51FE034AB00FA8227 /* GameScene.swift in Sources */,
+				8DEBB1AC1FFCAF4C00F65938 /* Drop.swift in Sources */,
 				9F0D2DF41FE5B3DF0073CC10 /* Font.swift in Sources */,
 				9F6642AD1FF12822008815D2 /* Bullet.swift in Sources */,
 				9FD7A9B71FE034AB00FA8227 /* GameViewController.swift in Sources */,
